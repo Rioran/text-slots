@@ -10,6 +10,7 @@
 <body>
     <script type="py" terminal worker>
         from random import randint
+        from sleep import sleep
 
 
         REEL_TEMPLATE = '🪙🎁💸💰💎👑🦄'
@@ -102,6 +103,7 @@
     
         while game.message != MESSAGES['game_over']:
             _ = input(MESSAGES['input_request'])
+            sleep(1)
             __terminal__.clear()
             game.spin()
             print(game)
