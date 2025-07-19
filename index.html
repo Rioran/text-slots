@@ -8,13 +8,13 @@
     <script type="module" src="https://pyscript.net/releases/2025.7.3/core.js"></script>
 </head>
 <body>
-    <div id="game-div"></div>
-    <button id="spin-button">Spin the Reels!</button>
+    <div id="game-div">Game messages</div><br><br>
+    <button id="spin-button">Spin!</button>
 
     <script type="py">
         from random import randint
 
-        from pyscript import Element
+        from pyscript import document
 
 
         REEL_TEMPLATE = '🪙🎁💸💰💎👑🦄'
@@ -39,8 +39,8 @@
             'zero_prize': 'Better luck next time!',
             'prize': 'You won {coins_count} 🪙!',
             'game_over': 'You have no 🪙 - GAME OVER!',
-            'input_request': '\nPress ENTER button. ',
-            'game': '\n\n{message}\n\nBalance: {balance} 🪙\nSpins: {spin_count} 🕹️\n\n{reels_text}',
+            'input_request': '<br>Press ENTER button. ',
+            'game': '{message}<br><br>Balance: {balance} 🪙<br>Spins: {spin_count} 🕹️<br><br>{reels_text}',
         }
         
         
@@ -54,8 +54,8 @@
         
             @property
             def reels_text(self):
-                return '\n'.join(
-                    '\t'.join(line)
+                return '<br>'.join(
+                    '--'.join(line)
                     for line in zip(*self.reels)
                 )
         
@@ -102,17 +102,17 @@
                     reels_text=self.reels_text
                 )
         
-        game_output_div = Element("game-output")
-        spin_button = Element("spin-button")
+        game_output_div = document.getElementById("game-div")
+        spin_button = document.getElementById("spin-button")
         game = Game()
-        game_output_div.write(repr(game))
+        game_output_div.innerHTML = repr(game)
 
         def on_spin_button_click(*args, **kwargs):
             if game.message != MESSAGES['game_over']:
                 game.spin()
-                game_output_div.write(repr(game))
+                game_output_div.innerHTML = repr(game)
                 
-        spin_button.element.onclick = on_spin_button_click
+        spin_button.onclick = on_spin_button_click
     </script>
 </body>
 </html>
