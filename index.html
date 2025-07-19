@@ -8,9 +8,13 @@
     <script type="module" src="https://pyscript.net/releases/2025.7.3/core.js"></script>
 </head>
 <body>
-    <script type="py" terminal worker>
+    <div id="game-div"></div>
+    <button id="spin-button">Spin the Reels!</button>
+
+    <script type="py">
         from random import randint
-        from time import sleep
+
+        from pyscript import Element
 
 
         REEL_TEMPLATE = '🪙🎁💸💰💎👑🦄'
@@ -98,15 +102,17 @@
                     reels_text=self.reels_text
                 )
         
+        game_output_div = Element("game-output")
+        spin_button = Element("spin-button")
         game = Game()
-        print(game)
-    
-        while game.message != MESSAGES['game_over']:
-            _ = input(MESSAGES['input_request'])
-            sleep(1)
-            __terminal__.clear()
-            game.spin()
-            print(game)
+        game_output_div.write(repr(game))
+
+        def on_spin_button_click(*args, **kwargs):
+            if game.message != MESSAGES['game_over']:
+                game.spin()
+                game_output_div.write(repr(game))
+                
+        spin_button.element.onclick = on_spin_button_click
     </script>
 </body>
 </html>
